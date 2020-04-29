@@ -2,6 +2,10 @@
     "name": "Caros coole App",
     "short_name": "CCA",
     "description": "Progressive Web App",
+    "start_url": "./index.html",
+    "display": "fullscreen",
+    "theme_color": "#f3214d",
+    "background_color": "#f32121",
     "icons": [
         {
             "src": "img/icon-72x72.png",
@@ -43,11 +47,8 @@
             "sizes": "512x512",
             "type": "image/png"
           }
-        ],
+        ]
         
     
-    "start_url": "/mycoolpwa/index.html",
-    "display": "fullscreen",
-    "theme_color": "#f3214d",
-    "background_color": "#f32121"
+   
 }

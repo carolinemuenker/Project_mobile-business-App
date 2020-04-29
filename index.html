@@ -3,73 +3,141 @@
 <html>
 
 <head>
-    
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <link rel="stylesheet" type="text/css" href="node_modules/framework7/css/framework7.bundle.min.css">
-    <link rel="manifest" href="meineapp.webmanifest">
-    <title>Hello World</title>
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-eval' data: gap: https://ssl.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; 
+    img-src 'self' data: content:;">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+  <meta name="theme-color" content="#f3214d">
+  <link rel="stylesheet" type="text/css" href="node_modules/framework7/css/framework7.bundle.min.css">
+  <link rel="stylesheet" type="text/less" href="node_modules/framework7/components/icon/icon-md.less">
+  <link rel="stylesheet" type="text/css" href="framework7-icons.css">
+  <link rel="manifest" href="meineapp.webmanifest">
+  <title>Hello World</title>
 </head>
 
-<body onload="bodyGeladen();"></body>
+<body onload="bodyGeladen();">
 
 
-    <!-- App root element -->
-    <div id="app">
+<!-- App root element -->
+<div id="app">
 
-        <!-- Your main view, should have "view-main" class -->
-        <div class="view view-main">
-            <!-- Initial Page, "data-name" contains page name -->
-            <div data-name="home" class="page">
-                <!-- Top Navbar -->
-                <div class="navbar">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="title">Awesome App</div>
-                    </div>
-                </div>
-                <!-- Bottom Toolbar -->
-                <div class="toolbar toolbar-bottom">
-                    <div class="toolbar-inner">
-                        <!-- Toolbar links -->
-                        <a href="#" class="link">Link 1</a>
-                        <a href="#" class="link">Link 2</a>
-                    </div>
-                </div>
-                <!-- Scrollable page content -->
-                <div class="page-content">
-                    <p>
-                        <div class="card">
-                            <div class="card-content card-content-padding card-outline">
-                                <a href="javascript:locationupdaten();">Hier klicken</a>, um die Location abzurufen
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-content card-content-padding" id="locationcard">
-                            </div>
-                        </div>
-                    </p>
-                </div>
-            </div>
+  <!-- Your main view, should have "view-main" class -->
+  <div class="view view-main">
+    <!-- Initial Page, "data-name" contains page name -->
+    <div data-name="home" class="page">
+      <!--class page muss immer für meine Seite gegeben sein-->
+      <!-- Top Navbar -->
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner sliding">
+          <div class="title">Meine wunderbare App</div>
         </div>
+      </div>
+      <div class="page-content hide-bars-on-scroll">
+        <div class="searchbar-backdrop"></div>
+        <p>
+          <div class="block Tab Book displayinitially">
+            <div class="searchbar searchbar-inline">
+              <input class="searchbar" placeholder="Suche" type="text" onkeyup="mySearchFunction()" id="meinInput"
+                style="padding:20px">
+            </div>
+            <div class="card" style="padding:20px">
+              <div onclick="neuerKontakt()">
+                <p>
+                  <i class="f7-icons">person_badge_plus</i>
+                  neuen Kontakt hinzuf&uuml;gen
+                </p>
+              </div>
+              <div>
+                <div class="list no-hairlines-md eingabeKontakt" id="kontaktErstellen" style="display:none">
+                  <ul>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Name</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="nameDesKontaktes" placeholder="Vorname" name="newContact">
+                          <span class="input-clear-button"></span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="block">
+                    <div class="row">
+                      <button class="col button button-fill button-round" onclick="datenSpeichern()">Speichern</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="list contacts-list" id="meineUL" style="margin-top:50px">
+            </div>
+          </div>
+          <section class="card Tab Location">
+            <div class="card-content card-content-padding card-outline">
+              <a href="javascript:locationupdaten();">Hier klicken</a>, um die Location abzurufen
+            </div>
+            <div class="card">
+              <div class="card-content card-content-padding" id="locationcard">
+              </div>
+            </div>
+          </section>
+          <section class="Tab Calendar block block-strong no-padding">
+            <div class="block-title"></div>
+            <h1>Kalender</h1>
+            <div class="block block-strong no-padding">
+              <div id="demo-calendar-inline-container"></div>
+            </div>
+          </section>
+        </p>
+      </div>
+      <div class="toolbar toolbar-bottom">
+        <div class="toolbar-inner">
+          <!-- Toolbar links -->
+          <a href="#tab-1" class="tab-link tab-link-active Book" onclick="zeigeTab('Book')">
+            <!-- Different icons for iOS and MD themes -->
+            <i class="f7-icons">book-fill</i>
+            <!-- Label text -->
+            <!--span class="tabbar-label">Inbox</span-->
+          </a>
+          <a href="#tab-3" class="tab-link Message" onclick="zeigeTab('Location')">
+            <i class="f7-icons">location</i>
+          </a>
+          <a href="#tab-2" class="tab-link Calendar" onclick="zeigeTab('Calendar')">
+            <i class="f7-icons">calendar_today<br></i>
+          </a>
+
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
 
 
 
 
-    <script type="text/javascript" src="node_modules/framework7/js/framework7.bundle.min.js">
-    </script>
-        window.usingCordova = false;
-    </script>
-    <script type="text/javascript" src="cordova.js"
-        onload="javascript:window.usingCordova = true;">
-    </script>
-    <script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="node_modules/framework7/js/framework7.bundle.min.js"></script>
+<script type = "text/javascript" src = "cordova.js" onload = "javascript:window.usingCordova = true;"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+        if ('serviceWorker' in navigator) {
+    // Register a service worker hosted at the root of the
+    // site using a more restrictive scope.
+    navigator.serviceWorker.register('serviceworker.js')
+      .then(function (registration) {
+        console.log('Service worker registration succeeded:', registration);
+      })
+      .catch(function (error) {
+        console.log('Service worker registration failed:', error);
+      });
+  } else {
+    console.log('Service workers are not supported.');
+  }
+</script>
+
 </body>
 
 </html>

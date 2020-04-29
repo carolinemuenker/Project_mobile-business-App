@@ -1,0 +1,521 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+    font-size:12px;
+    height:100vh;
+    margin:0px;
+    padding:0px;
+    /* Padding to avoid the "unsafe" areas behind notches in the screen */
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);
+    text-transform:uppercase;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                                      /* offset horizontal: half of image width and text area width */
+    }
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+.title{
+  text-align: center;
+}
+
+#meinInput {
+  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+#myUL {
+  /* Remove default list styling */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#meineUL li .item-title {
+  border: 1px solid #ddd; /* Add a border to all links */
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6; /* Grey background color */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove default text underline */
+  font-size: 18px; /* Increase the font-size */
+  color: black; /* Add a black text color */
+  display: block; /* Make it into a block element to fill the whole list */
+}
+
+#myUL li .item-title:hover:not(.header) {
+  background-color: #eee; /* Add a hover effect to all links, except for headers */
+}
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+:root {
+    /*
+    --f7-navbar-bg-color: var(--f7-bars-bg-color);
+    --f7-navbar-bg-color-rgb: var(--f7-bars-bg-color-rgb);
+    --f7-navbar-bg-image: var(--f7-bars-bg-image);
+    --f7-navbar-border-color: var(--f7-bars-border-color);
+    --f7-navbar-link-color: var(--f7-bars-link-color);
+    --f7-navbar-text-color: var(--f7-bars-text-color);
+    */
+    --f7-navbar-hide-show-transition-duration: 400ms;
+    --f7-navbar-title-line-height: 1.2;
+    --f7-navbar-title-font-size: inherit;
+    --f7-navbar-subtitle-text-align: inherit;
+    --f7-navbar-large-title-line-height: 1.2;
+    --f7-navbar-large-title-text-color: inherit;
+    --f7-navbar-large-title-padding-left: 16px;
+    --f7-navbar-large-title-padding-right: 16px;
+  }
+  .ios {
+    --f7-navbar-height: 44px;
+    --f7-navbar-tablet-height: 44px;
+    --f7-navbar-font-size: 17px;
+    --f7-navbar-inner-padding-left: 8px;
+    --f7-navbar-inner-padding-right: 8px;
+    --f7-navbar-title-font-weight: 600;
+    --f7-navbar-title-margin-left: 0;
+    --f7-navbar-title-margin-right: 0;
+    --f7-navbar-title-text-align: center;
+    --f7-navbar-subtitle-font-size: 10px;
+    --f7-navbar-subtitle-line-height: 1;
+    --f7-navbar-shadow-image: none;
+    --f7-navbar-large-title-height: 52px;
+    --f7-navbar-large-title-font-size: 34px;
+    --f7-navbar-large-title-font-weight: 700;
+    --f7-navbar-large-title-letter-spacing: -0.03em;
+    --f7-navbar-large-title-padding-vertical: 6px;
+    /*
+    --f7-navbar-link-height: var(--f7-navbar-height);
+    --f7-navbar-link-line-height: var(--f7-navbar-height);
+    */
+    --f7-navbar-subtitle-text-color: rgba(0, 0, 0, 0.55);
+  }
+  .ios .theme-dark,
+  .ios.theme-dark {
+    --f7-navbar-subtitle-text-color: rgba(255, 255, 255, 0.55);
+  }
+  .md {
+    --f7-navbar-height: 56px;
+    --f7-navbar-tablet-height: 64px;
+    --f7-navbar-font-size: 20px;
+    --f7-navbar-inner-padding-left: 0px;
+    --f7-navbar-inner-padding-right: 0px;
+    --f7-navbar-title-font-weight: 500;
+    --f7-navbar-title-margin-left: 16px;
+    --f7-navbar-title-margin-right: 16px;
+    --f7-navbar-title-text-align: left;
+    --f7-navbar-subtitle-font-size: 14px;
+    --f7-navbar-subtitle-line-height: 1.2;
+    --f7-navbar-shadow-image: var(--f7-bars-shadow-bottom-image);
+    --f7-navbar-large-title-font-size: 34px;
+    --f7-navbar-large-title-height: 56px;
+    --f7-navbar-large-title-font-weight: 500;
+    --f7-navbar-large-title-letter-spacing: 0;
+    --f7-navbar-large-title-padding-vertical: 8px;
+    /*
+    --f7-navbar-link-height: var(--f7-navbar-height);
+    --f7-navbar-link-line-height: var(--f7-navbar-height);
+    */
+    --f7-navbar-subtitle-text-color: rgba(0, 0, 0, 0.85);
+  }
+  .md .theme-dark,
+  .md.theme-dark {
+    --f7-navbar-subtitle-text-color: rgba(255, 255, 255, 0.85);
+  }
+  .aurora {
+    --f7-navbar-height: 38px;
+    --f7-navbar-tablet-height: 38px;
+    --f7-navbar-font-size: 14px;
+    --f7-navbar-inner-padding-left: 16px;
+    --f7-navbar-inner-padding-right: 16px;
+    --f7-navbar-title-font-weight: 600;
+    --f7-navbar-title-margin-left: 0;
+    --f7-navbar-title-margin-right: 0;
+    --f7-navbar-title-text-align: center;
+    --f7-navbar-subtitle-font-size: 12px;
+    --f7-navbar-subtitle-line-height: 1;
+    --f7-navbar-shadow-image: none;
+    --f7-navbar-large-title-height: 38px;
+    --f7-navbar-large-title-font-size: 26px;
+    --f7-navbar-large-title-font-weight: bold;
+    --f7-navbar-large-title-letter-spacing: -0.03em;
+    --f7-navbar-large-title-padding-vertical: 4px;
+    --f7-navbar-link-height: auto;
+    --f7-navbar-link-line-height: inherit;
+    --f7-navbar-subtitle-text-color: rgba(0, 0, 0, 0.6);
+  }
+  .aurora .theme-dark,
+  .aurora.theme-dark {
+    --f7-navbar-subtitle-text-color: rgba(255, 255, 255, 0.5);
+  }
+  :root {
+    --f7-calendar-height: 340px;
+    --f7-calendar-sheet-landscape-height: 220px;
+    --f7-calendar-popover-width: 320px;
+    --f7-calendar-popover-height: 320px;
+    --f7-calendar-modal-height: 420px;
+    --f7-calendar-modal-max-width: 380px;
+    --f7-calendar-modal-border-radius: 4px;
+    /*
+    --f7-calendar-header-bg-color: var(--f7-bars-bg-color);
+    --f7-calendar-header-link-color: var(--f7-bars-link-color);
+    --f7-calendar-header-text-color: var(--f7-bars-text-color);
+    --f7-calendar-footer-bg-color: var(--f7-bars-bg-color);
+    --f7-calendar-footer-border-color: var(--f7-bars-border-color);
+    --f7-calendar-footer-link-color: var(--f7-bars-link-color);
+    --f7-calendar-footer-text-color: var(--f7-bars-text-color);
+    --f7-calendar-week-header-bg-color: var(--f7-bars-bg-color);
+    --f7-calendar-week-header-text-color: var(--f7-bars-text-color);
+    */
+    --f7-calendar-footer-padding: 0 8px;
+    --f7-calendar-week-header-font-size: 11px;
+    --f7-calendar-selected-text-color: #fff;
+    /*
+    --f7-calendar-selected-bg-color:  var(--f7-theme-color);
+    */
+    --f7-calendar-prev-next-text-color: #b8b8b8;
+    --f7-calendar-disabled-text-color: #d4d4d4;
+    --f7-calendar-event-dot-size: 4px;
+    /*
+    --f7-calendar-event-bg-color: var(--f7-theme-color);
+    */
+    /*
+    --f7-calendar-picker-selected-text-color: var(--f7-theme-color);
+    */
+    --f7-calendar-day-text-color: #000;
+    --f7-calendar-sheet-bg-color: #fff;
+    --f7-calendar-modal-bg-color: #fff;
+    --f7-calendar-picker-bg-color: #fff;
+    --f7-calendar-picker-pressed-bg-color: rgba(0, 0, 0, 0.1);
+    --f7-calendar-picker-hover-bg-color: rgba(0, 0, 0, 0.03);
+  }
+  :root .theme-dark,
+  :root.theme-dark {
+    --f7-calendar-sheet-border-color: var(--f7-bars-border-color);
+    --f7-calendar-modal-bg-color: #121212;
+    --f7-calendar-sheet-bg-color: #121212;
+    --f7-calendar-picker-bg-color: #1c1c1d;
+    --f7-calendar-picker-pressed-bg-color: rgba(255, 255, 255, 0.08);
+    --f7-calendar-picker-hover-bg-color: rgba(255, 255, 255, 0.03);
+  }
+  .ios {
+    --f7-calendar-sheet-border-color: #929499;
+    --f7-calendar-header-height: 44px;
+    --f7-calendar-header-font-size: 17px;
+    --f7-calendar-header-font-weight: 600;
+    --f7-calendar-header-padding: 0 8px;
+    --f7-calendar-footer-height: 44px;
+    --f7-calendar-footer-font-size: 17px;
+    --f7-calendar-week-header-height: 18px;
+    --f7-calendar-day-font-size: 15px;
+    --f7-calendar-day-size: 30px;
+    --f7-calendar-picker-font-size: 17px;
+    --f7-calendar-time-selector-font-size: 17px;
+    --f7-calendar-row-border-color: rgba(0, 0, 0, 0.25);
+    --f7-calendar-today-text-color: #000;
+    --f7-calendar-today-bg-color: #e3e3e3;
+  }
+  .ios .theme-dark,
+  .ios.theme-dark {
+    --f7-calendar-row-border-color: var(--f7-bars-border-color);
+    --f7-calendar-day-text-color: #fff;
+    --f7-calendar-today-text-color: #fff;
+    --f7-calendar-today-bg-color: #333;
+  }
+  .md {
+    --f7-calendar-sheet-border-color: #ccc;
+    --f7-calendar-header-height: 56px;
+    --f7-calendar-header-font-size: 20px;
+    --f7-calendar-header-font-weight: 400;
+    --f7-calendar-header-padding: 0 24px;
+    --f7-calendar-footer-height: 48px;
+    --f7-calendar-footer-font-size: 14px;
+    --f7-calendar-week-header-height: 24px;
+    --f7-calendar-row-border-color: transparent;
+    --f7-calendar-day-font-size: 14px;
+    /*
+    --f7-calendar-today-text-color: var(--f7-theme-color);
+    */
+    --f7-calendar-today-bg-color: none;
+    --f7-calendar-day-size: 32px;
+    --f7-calendar-picker-font-size: 14px;
+    --f7-calendar-time-selector-font-size: 14px;
+  }
+  .md .theme-dark,
+  .md.theme-dark {
+    --f7-calendar-day-text-color: rgba(255, 255, 255, 0.87);
+  }
+  .aurora {
+    --f7-calendar-sheet-border-color: #ccc;
+    --f7-calendar-header-height: 38px;
+    --f7-calendar-header-font-size: 14px;
+    --f7-calendar-header-font-weight: 600;
+    --f7-calendar-header-padding: 0 8px;
+    --f7-calendar-footer-height: 38px;
+    --f7-calendar-footer-font-size: 14px;
+    --f7-calendar-week-header-height: 18px;
+    --f7-calendar-day-font-size: 13px;
+    --f7-calendar-day-size: 30px;
+    --f7-calendar-picker-font-size: 14px;
+    --f7-calendar-time-selector-font-size: 14px;
+    --f7-calendar-row-border-color: #e3e3e3;
+    --f7-calendar-today-text-color: #000;
+    --f7-calendar-today-bg-color: #e3e3e3;
+  }
+  .aurora .theme-dark,
+  .aurora.theme-dark {
+    --f7-calendar-row-border-color: var(--f7-bars-border-color);
+    --f7-calendar-day-text-color: #fff;
+    --f7-calendar-today-text-color: #fff;
+    --f7-calendar-today-bg-color: #333;
+  }
+  :root .theme-dark,
+:root.theme-dark {
+  --f7-contacts-list-title-text-color: #fff;
+}
+.ios {
+  --f7-contacts-list-title-font-size: inherit;
+  --f7-contacts-list-title-font-weight: 600;
+  --f7-contacts-list-title-height: 22px;
+  --f7-contacts-list-title-text-color: #000;
+  --f7-contacts-list-title-bg-color: #f7f7f7;
+}
+.ios .theme-dark,
+.ios.theme-dark {
+  --f7-contacts-list-title-bg-color: #323234;
+}
+.md {
+  --f7-contacts-list-title-font-size: 20px;
+  --f7-contacts-list-title-font-weight: 500;
+  /*
+  --f7-contacts-list-title-text-color: var(--f7-theme-color);
+  */
+  --f7-contacts-list-title-height: 48px;
+  --f7-contacts-list-title-bg-color: transparent;
+}
+.aurora {
+  --f7-contacts-list-title-font-weight: 600;
+  --f7-contacts-list-title-text-color: #000;
+  /*
+  --f7-contacts-list-title-bg-color: var(--f7-list-group-title-bg-color);
+  --f7-contacts-list-title-font-size: var(--f7-list-group-title-font-size);
+  --f7-contacts-list-title-line-height: var(--f7-list-group-title-height);
+  --f7-contacts-list-title-height: var(--f7-list-group-title-height);
+  */
+}
+
+:root {
+  --f7-input-bg-color: transparent;
+  --f7-label-font-weight: 400;
+  --f7-label-line-height: 1.3;
+  --f7-input-padding-left: 0px;
+  --f7-input-padding-right: 0px;
+  --f7-input-error-text-color: #ff3b30;
+  --f7-input-error-font-size: 12px;
+  --f7-input-error-line-height: 1.4;
+  --f7-input-error-font-weight: 400;
+  --f7-input-info-font-size: 12px;
+  --f7-input-info-line-height: 1.4;
+  --f7-input-outline-height: 40px;
+  --f7-input-outline-border-radius: 4px;
+  --f7-input-outline-padding-horizontal: 12px;
+  --f7-textarea-height: 100px;
+  /*
+  --f7-input-outline-focused-border-color: var(--f7-theme-color);
+  --f7-input-outline-invalid-border-color: var(--f7-input-error-text-color);
+  */
+  --f7-input-outline-border-color: #999;
+}
+:root .theme-dark,
+:root.theme-dark {
+  --f7-input-outline-border-color: #444;
+}
+.ios {
+  --f7-input-height: 44px;
+  --f7-input-font-size: 17px;
+  --f7-input-placeholder-color: #a9a9a9;
+  --f7-textarea-padding-vertical: 11px;
+  /*
+  --f7-input-focused-border-color: var(--f7-list-item-border-color);
+  --f7-input-invalid-border-color: var(--f7-list-item-border-color);
+  --f7-input-invalid-text-color: var(--f7-input-error-text-color);
+  */
+  --f7-label-font-size: 12px;
+  --f7-label-text-color: inherit;
+  /*
+  --f7-label-focused-text-color: var(--f7-label-text-color);
+  --f7-label-invalid-text-color: var(--f7-label-text-color);
+  */
+  --f7-floating-label-scale: calc(17 / 12);
+  --f7-inline-label-font-size: 17px;
+  --f7-inline-label-line-height: 1.4;
+  --f7-inline-label-padding-top: 3px;
+  --f7-input-clear-button-size: 14px;
+  --f7-input-text-color: #000000;
+  --f7-input-info-text-color: rgba(0, 0, 0, 0.45);
+  --f7-input-clear-button-color: rgba(0, 0, 0, 0.45);
+}
+.ios .theme-dark,
+.ios.theme-dark {
+  --f7-input-text-color: #fff;
+  --f7-input-info-text-color: rgba(255, 255, 255, 0.55);
+  --f7-input-clear-button-color: rgba(255, 255, 255, 0.5);
+}
+.md {
+  --f7-input-height: 36px;
+  --f7-input-font-size: 16px;
+  --f7-textarea-padding-vertical: 7px;
+  /*
+  --f7-input-focused-border-color: var(--f7-theme-color);
+  --f7-input-invalid-border-color: var(--f7-input-error-text-color);
+  --f7-input-invalid-text-color: var(--f7-input-text-color);
+  */
+  --f7-label-font-size: 12px;
+  /*
+  --f7-label-focused-text-color: var(--f7-theme-color);
+  --f7-label-invalid-text-color: var(--f7-input-error-text-color );
+  */
+  --f7-floating-label-scale: calc(16 / 12);
+  --f7-inline-label-font-size: 16px;
+  --f7-inline-label-line-height: 1.5;
+  --f7-inline-label-padding-top: 7px;
+  --f7-input-clear-button-size: 18px;
+  --f7-input-clear-button-color: #aaa;
+  --f7-input-text-color: #212121;
+  --f7-input-placeholder-color: rgba(0, 0, 0, 0.35);
+  --f7-label-text-color: rgba(0, 0, 0, 0.65);
+  --f7-input-info-text-color: rgba(0, 0, 0, 0.45);
+}
+.md .theme-dark,
+.md.theme-dark {
+  --f7-input-text-color: rgba(255, 255, 255, 0.87);
+  --f7-input-placeholder-color: rgba(255, 255, 255, 0.35);
+  --f7-label-text-color: rgba(255, 255, 255, 0.54);
+  --f7-input-info-text-color: rgba(255, 255, 255, 0.45);
+}
+.aurora {
+  --f7-input-height: 24px;
+  --f7-input-font-size: 13px;
+  --f7-textarea-padding-vertical: 2px;
+  /*
+  --f7-input-focused-border-color: var(--f7-list-item-border-color);
+  --f7-input-invalid-border-color: var(--f7-list-item-border-color);
+  --f7-input-invalid-text-color: var(--f7-input-error-text-color);
+  */
+  --f7-label-font-size: 11px;
+  --f7-label-text-color: inherit;
+  /*
+  --f7-label-focused-text-color: var(--f7-label-text-color);
+  --f7-label-invalid-text-color: var(--f7-label-text-color);
+  */
+  --f7-floating-label-scale: calc(13 / 11);
+  --f7-inline-label-font-size: 14px;
+  --f7-inline-label-line-height: 1.4;
+  --f7-inline-label-padding-top: 1px;
+  --f7-input-clear-button-size: 14px;
+  --f7-input-outline-height: 32px;
+  --f7-input-outline-padding-horizontal: 8px;
+  --f7-input-text-color: #000000;
+  --f7-input-placeholder-color: rgba(0, 0, 0, 0.32);
+  --f7-input-clear-button-color: #666;
+  --f7-input-info-text-color: rgba(0, 0, 0, 0.5);
+}
+.aurora .theme-dark,
+.aurora.theme-dark {
+  --f7-input-text-color: #fff;
+  --f7-input-clear-button-color: #aaa;
+  --f7-input-placeholder-color: rgba(255, 255, 255, 0.35);
+  --f7-input-info-text-color: rgba(255, 255, 255, 0.45);
+}
